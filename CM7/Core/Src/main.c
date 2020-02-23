@@ -48,6 +48,7 @@
 I2C_HandleTypeDef hi2c4;
 
 SAI_HandleTypeDef hsai_BlockA1;
+SAI_HandleTypeDef hsai_BlockB1;
 
 /* USER CODE BEGIN PV */
 
@@ -130,9 +131,9 @@ Error_Handler();
   /* USER CODE BEGIN 2 */
 
 	__HAL_SAI_ENABLE(&hsai_BlockA1);
+	__HAL_SAI_ENABLE(&hsai_BlockB1);
 
 	PlaybackParameters playbackParameters;
-	playbackParameters.Device = AUDIO_OUT_DEVICE_HEADPHONE;
 	playbackParameters.ChannelsNbr = 2;
 	playbackParameters.SampleRate = AUDIO_FREQUENCY;
 	playbackParameters.BitsPerSample = AUDIO_RESOLUTION;
@@ -142,8 +143,8 @@ Error_Handler();
 		Error_Handler();
 	}
 
-
-	uint32_t sampleCount = 109;
+	uint32_t toneFreq = 440;
+	uint32_t sampleCount = AUDIO_FREQUENCY_96K/toneFreq;
 	int16_t sound[sampleCount*2];
 	for (uint32_t i = 0; i < sampleCount; i++) {
 		int16_t val = i < sampleCount/2 ? 0x7fff : -0x7fff; // square
@@ -160,6 +161,10 @@ Error_Handler();
 	uint32_t onOff = 0;
 	uint32_t counter = HAL_GetTick() + 1000;
 	for (;;) {
+//		if (HAL_SAI_Receive(&hsai_BlockB1, (uint8_t*) sound, sampleCount*sizeof(uint16_t)/sizeof(uint8_t), 1000) != HAL_OK) {
+//			Error_Handler();
+//		}
+
 		if (HAL_SAI_Transmit(&hsai_BlockA1, (uint8_t*) sound, sampleCount*sizeof(uint16_t)/sizeof(uint8_t), 1000) != HAL_OK) {
 			Error_Handler();
 		}
@@ -324,7 +329,7 @@ static void MX_SAI1_Init(void)
   hsai_BlockA1.Init.OutputDrive = SAI_OUTPUTDRIVE_ENABLE;
   hsai_BlockA1.Init.NoDivider = SAI_MASTERDIVIDER_ENABLE;
   hsai_BlockA1.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_1QF;
-  hsai_BlockA1.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_48K;
+  hsai_BlockA1.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_96K;
   hsai_BlockA1.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
   hsai_BlockA1.Init.MonoStereoMode = SAI_STEREOMODE;
   hsai_BlockA1.Init.CompandingMode = SAI_NOCOMPANDING;
@@ -341,13 +346,36 @@ static void MX_SAI1_Init(void)
   hsai_BlockA1.SlotInit.SlotSize = SAI_SLOTSIZE_DATASIZE;
   hsai_BlockA1.SlotInit.SlotNumber = 4;
   hsai_BlockA1.SlotInit.SlotActive = 0x00000005;
-
-  hsai_BlockA1.Init.Mckdiv               = 0;
-  hsai_BlockA1.Init.MckOverSampling      = SAI_MCK_OVERSAMPLING_DISABLE;
-  hsai_BlockA1.Init.MckOutput            = SAI_MCK_OUTPUT_DISABLE;
-
-
   if (HAL_SAI_Init(&hsai_BlockA1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  hsai_BlockB1.Instance = SAI1_Block_B;
+  hsai_BlockB1.Init.Protocol = SAI_FREE_PROTOCOL;
+  hsai_BlockB1.Init.AudioMode = SAI_MODESLAVE_RX;
+  hsai_BlockB1.Init.DataSize = SAI_DATASIZE_8;
+  hsai_BlockB1.Init.FirstBit = SAI_FIRSTBIT_MSB;
+  hsai_BlockB1.Init.ClockStrobing = SAI_CLOCKSTROBING_FALLINGEDGE;
+  hsai_BlockB1.Init.Synchro = SAI_SYNCHRONOUS;
+  hsai_BlockB1.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
+  hsai_BlockB1.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_1QF;
+  hsai_BlockB1.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
+  hsai_BlockB1.Init.MonoStereoMode = SAI_STEREOMODE;
+  hsai_BlockB1.Init.CompandingMode = SAI_NOCOMPANDING;
+  hsai_BlockB1.Init.TriState = SAI_OUTPUT_NOTRELEASED;
+  hsai_BlockB1.Init.PdmInit.Activation = DISABLE;
+  hsai_BlockB1.Init.PdmInit.MicPairsNbr = 1;
+  hsai_BlockB1.Init.PdmInit.ClockEnable = SAI_PDM_CLOCK1_ENABLE;
+  hsai_BlockB1.FrameInit.FrameLength = 128;
+  hsai_BlockB1.FrameInit.ActiveFrameLength = 1;
+  hsai_BlockB1.FrameInit.FSDefinition = SAI_FS_STARTFRAME;
+  hsai_BlockB1.FrameInit.FSPolarity = SAI_FS_ACTIVE_LOW;
+  hsai_BlockB1.FrameInit.FSOffset = SAI_FS_FIRSTBIT;
+  hsai_BlockB1.SlotInit.FirstBitOffset = 0;
+  hsai_BlockB1.SlotInit.SlotSize = SAI_SLOTSIZE_DATASIZE;
+  hsai_BlockB1.SlotInit.SlotNumber = 1;
+  hsai_BlockB1.SlotInit.SlotActive = 0x00000000;
+  if (HAL_SAI_Init(&hsai_BlockB1) != HAL_OK)
   {
     Error_Handler();
   }
