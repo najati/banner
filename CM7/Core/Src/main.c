@@ -24,7 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "codec.h"
+#include "wm8994.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -136,42 +137,8 @@ Error_Handler();
   /* USER CODE BEGIN 2 */
 
 	__HAL_SAI_ENABLE(&hsai_BlockA1);
-//	__HAL_SAI_ENABLE(&hsai_BlockB1);
+	__HAL_SAI_ENABLE(&hsai_BlockB1);
 
-	PlaybackParameters playbackParameters;
-	playbackParameters.ChannelsNbr = 2;
-	playbackParameters.SampleRate = AUDIO_FREQUENCY;
-	playbackParameters.BitsPerSample = AUDIO_RESOLUTION;
-	playbackParameters.Volume = 80;
-
-	if (InitCodec(&playbackParameters, &hi2c4) != 0) {
-		Error_Handler();
-	}
-
-	uint32_t toneFreq = 220;
-	uint32_t sampleCount = AUDIO_FREQUENCY/toneFreq;
-	uint32_t softening = 2;
-	int16_t sound[sampleCount*2];
-
-	uint16_t txBuf[8];
-	uint16_t rxBuf[8];
-	for (uint32_t i = 0; i < sampleCount; i++) {
-//		if (i < sampleCount/2 - softening) {
-//			val = 0;
-//		}
-//		int16_t val = i < sampleCount/2 ? 0x7fff : -0x7fff; // square
-		int16_t val = (2 * (i / (float) sampleCount) - 0.5) * 0x7fff;  // saw
-		sound[i*2] = val;
-		sound[i*2+1] = val;
-	}
-
-//	if (HAL_SAI_Receive_DMA(&hsai_BlockB1, (uint8_t*) rxBuf, 8) != HAL_OK) {
-//		Error_Handler();
-//	}
-
-	if (HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*) sound, 8) != HAL_OK) {
-		Error_Handler();
-	}
 
   /* USER CODE END 2 */
  
@@ -182,10 +149,6 @@ Error_Handler();
 	uint32_t onOff = 0;
 	uint32_t counter = HAL_GetTick() + 1000;
 	for (;;) {
-//		if (HAL_SAI_Transmit(&hsai_BlockA1, (uint8_t*) sound, sampleCount*sizeof(uint16_t)/sizeof(uint8_t), 1000) != HAL_OK) {
-//			Error_Handler();
-//		}
-
 		uint32_t t = HAL_GetTick();
 		if (t > counter) {
 			HAL_GPIO_WritePin (LED1_GPIO_Port, LED1_Pin, onOff++%2 == 0 ?  GPIO_PIN_SET :  GPIO_PIN_RESET);
@@ -195,6 +158,7 @@ Error_Handler();
 
     /* USER CODE BEGIN 3 */
   }
+
   /* USER CODE END 3 */
 }
 
