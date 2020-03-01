@@ -11,7 +11,7 @@
 #define AUDIO_RESOLUTION_16B                16U
 #define AUDIO_RESOLUTION_32B                32U
 
-#define AUDIO_FREQUENCY     	    AUDIO_FREQUENCY_96K
+#define AUDIO_FREQUENCY     	    AUDIO_FREQUENCY_48K
 #define AUDIO_RESOLUTION         AUDIO_RESOLUTION_16B
 
 typedef struct

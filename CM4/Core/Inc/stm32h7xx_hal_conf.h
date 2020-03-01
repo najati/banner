@@ -34,7 +34,7 @@
   */
 #define HAL_MODULE_ENABLED  
 
-  #define HAL_ADC_MODULE_ENABLED
+  /* #define HAL_ADC_MODULE_ENABLED   */
 /* #define HAL_FDCAN_MODULE_ENABLED   */
 /* #define HAL_CEC_MODULE_ENABLED   */
 /* #define HAL_COMP_MODULE_ENABLED   */
@@ -95,6 +95,7 @@
 #define HAL_I2C_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_HSEM_MODULE_ENABLED
+
 
 /* ########################## Oscillator Values adaptation ####################*/
 /**

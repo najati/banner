@@ -68,10 +68,6 @@ void Error_Handler(void);
 #define OSC_OUT_GPIO_Port GPIOH
 #define OSC_IN_Pin GPIO_PIN_0
 #define OSC_IN_GPIO_Port GPIOH
-#define ARD_A2_Pin GPIO_PIN_0
-#define ARD_A2_GPIO_Port GPIOA
-#define ARD_A3_Pin GPIO_PIN_1
-#define ARD_A3_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

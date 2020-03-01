@@ -70,7 +70,7 @@ int32_t InitCodec(PlaybackParameters* AudioInit, I2C_HandleTypeDef* hbus_i2c) {
 	void *Audio_CompObj = &WM8994Obj;
 
 	WM8994_Init_t codec_init;
-	codec_init.Resolution = (AudioInit->BitsPerSample == AUDIO_RESOLUTION_32B) ? 3 : 0;
+	codec_init.Resolution = WM8994_RESOLUTION_16b;
 	codec_init.Frequency = AudioInit->SampleRate;
 	codec_init.InputDevice = WM8994_IN_LINE1;
 	codec_init.OutputDevice = WM8994_OUT_HEADPHONE;

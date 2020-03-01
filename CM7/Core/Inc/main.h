@@ -86,6 +86,8 @@ void Error_Handler(void);
 #define OSC_IN_GPIO_Port GPIOH
 #define LED4_Pin GPIO_PIN_15
 #define LED4_GPIO_Port GPIOI
+#define ARD_A2_Pin GPIO_PIN_0
+#define ARD_A2_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
