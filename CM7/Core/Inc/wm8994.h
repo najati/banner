@@ -44,13 +44,13 @@
 #define VOLUME_CONVERT(Volume)        (((Volume) > 100)? 100:((uint8_t)(((Volume) * 63) / 100)))
 #define VOLUME_IN_CONVERT(Volume)     (((Volume) >= 100)? 239:((uint8_t)(((Volume) * 240) / 100)))
 
-#define  WM8994_ID    0x8994
+#define  WM8994_ID    0x8994U
 #define WM8994_CHIPID_ADDR                  0x00
 
 uint32_t wm8994_Init(uint16_t DeviceAddr, uint16_t OutputInputDevice, uint8_t Volume, uint32_t AudioFreq);
 void     wm8994_DeInit(void);
 uint32_t wm8994_ReadID(uint16_t DeviceAddr);
-uint32_t wm8994_Play(uint16_t DeviceAddr, uint16_t* pBuffer, uint16_t Size);
+uint32_t wm8994_Play(uint16_t DeviceAddr);
 uint32_t wm8994_Pause(uint16_t DeviceAddr);
 uint32_t wm8994_Resume(uint16_t DeviceAddr);
 uint32_t wm8994_Stop(uint16_t DeviceAddr, uint32_t Cmd);
