@@ -166,6 +166,7 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
+  .RAM_D3 : { *(.RAM_D3) } >IRAM2
 }
 
 

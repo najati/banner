@@ -54,8 +54,6 @@ uint32_t wm8994_Init(uint16_t DeviceAddr, uint16_t OutputInputDevice, uint8_t Vo
   uint16_t input_device = OutputInputDevice & 0xFF00;
   uint16_t power_mgnt_reg_1 = 0;
   
-  /* Initialize the Control interface of the Audio Codec */
-  AUDIO_IO_Init();
   /* wm8994 Errata Work-Arounds */
   counter += CODEC_IO_Write(DeviceAddr, 0x102, 0x0003);
   counter += CODEC_IO_Write(DeviceAddr, 0x817, 0x0000);
@@ -530,8 +528,6 @@ uint32_t wm8994_Init(uint16_t DeviceAddr, uint16_t OutputInputDevice, uint8_t Vo
   */
 void wm8994_DeInit(void)
 {
-  /* Deinitialize Audio Codec interface */
-  AUDIO_IO_DeInit();
 }
 
 /**
@@ -541,8 +537,6 @@ void wm8994_DeInit(void)
   */
 uint32_t wm8994_ReadID(uint16_t DeviceAddr)
 {
-  /* Initialize the Control interface of the Audio Codec */
-  AUDIO_IO_Init();
 
   return ((uint32_t)AUDIO_IO_Read(DeviceAddr, WM8994_CHIPID_ADDR));
 }

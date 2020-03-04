@@ -5,11 +5,6 @@
 
 extern I2C_HandleTypeDef hi2c4;
 
-void AUDIO_IO_Init(void) {
-}
-
-void AUDIO_IO_DeInit(void) { }
-
 void AUDIO_IO_Write(uint8_t Addr, uint16_t Reg, uint16_t Value) {
 	uint16_t tmp = Value;
 

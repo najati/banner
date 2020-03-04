@@ -99,7 +99,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF4_I2C4;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
@@ -208,7 +208,7 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef* hsai)
     hdma_sai1_a.Init.PeriphBurst = DMA_PBURST_SINGLE;
     if (HAL_DMA_Init(&hdma_sai1_a) != HAL_OK)
     {
-      ErrorHandler();
+      Error_Handler();
     }
 
     /* Several peripheral DMA handle pointers point to the same DMA handle.
@@ -248,13 +248,10 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef* hsai)
     hdma_sai1_b.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_sai1_b.Init.Mode = DMA_CIRCULAR;
     hdma_sai1_b.Init.Priority = DMA_PRIORITY_HIGH;
-    hdma_sai1_b.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
-    hdma_sai1_b.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
-    hdma_sai1_b.Init.MemBurst = DMA_MBURST_SINGLE;
-    hdma_sai1_b.Init.PeriphBurst = DMA_PBURST_SINGLE;
+    hdma_sai1_b.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_sai1_b) != HAL_OK)
     {
-      ErrorHandler();
+      Error_Handler();
     }
 
     /* Several peripheral DMA handle pointers point to the same DMA handle.
